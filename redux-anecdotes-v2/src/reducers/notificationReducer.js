@@ -4,6 +4,8 @@ const initialState = {
     id: 0
 }
 
+const getId = () => (100000*Math.random()).toFixed(0)
+
 const reducer = (store = initialState, action) => {
     if(action.type === 'SHOW') {
         return {
@@ -25,21 +27,34 @@ const reducer = (store = initialState, action) => {
     return store
 }
 
-export const showCreation = (content, id) => {
-    return {
+export const showNotification = (content, time) => (dispatch) => {
+    const id = getId()
+    dispatch({
         type: 'SHOW',
         id,
         content
-    }
+    })
+    setTimeout(() => {
+        dispatch({
+            type: 'HIDE',
+            id
+        })
+    }, time*1000)
 }
 
-export const hideCreation = (id) => {
-    return {
+export const show = (content, id) => (dispatch) => {
+    dispatch({
+        type: 'SHOW',
+        id,
+        content
+    })
+}
+
+export const hide = (id) => (dispatch) => {
+    dispatch({
         type: 'HIDE',
         id
-    }
+    })
 }
-
-export const getId = () => (100000*Math.random()).toFixed(0)
 
 export default reducer

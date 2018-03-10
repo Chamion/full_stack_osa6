@@ -8,11 +8,11 @@ const reducer = (store = initialState, action) => {
     return store
 }
 
-export const filterCreation = (filter) => {
-    return {
+export const filter = (filter) => (dispatch) => {
+    dispatch({
         type: 'FILTER',
         filter
-    }
+    })
 }
 
 export default reducer

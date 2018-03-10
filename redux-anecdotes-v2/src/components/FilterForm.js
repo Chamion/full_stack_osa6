@@ -1,12 +1,12 @@
 import React from 'react'
-import { filterCreation } from '../reducers/filterReducer'
+import { filter } from '../reducers/filterReducer'
 import { connect } from 'react-redux'
 
 class FilterForm extends React.Component {
     handleChange = (e) => {
         e.preventDefault()
         const filter = e.target.value
-        this.props.filterCreation(filter)
+        this.props.filter(filter)
     }
     
     render() {
@@ -22,17 +22,11 @@ class FilterForm extends React.Component {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        filterCreation: (value) => {
-            dispatch(filterCreation(value))
-        }
-    }
-}
-
 const connectedFilterForm = connect(
     null,
-    mapDispatchToProps
+    {
+        filter
+    }
 )(FilterForm)
 
 export default connectedFilterForm

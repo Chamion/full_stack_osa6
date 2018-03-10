@@ -1,23 +1,14 @@
 import React from 'react'
-import { voteCreation } from '../reducers/anecdoteReducer'
-import { showCreation, hideCreation, getId } from '../reducers/notificationReducer'
+import { vote } from '../reducers/anecdoteReducer'
+import { showNotification } from '../reducers/notificationReducer'
 import FilterForm from './FilterForm'
 import { connect } from 'react-redux'
 
 class AnecdoteList extends React.Component {
     
-    handleVote = (id, content) => () => {
-        this.props.voteCreation(id)
-        this.showNotification(content)
-    }
-    
-    showNotification(content) {
-        const notificationContent = 'You voted \'' + content + '\'.'
-        const id = getId()
-        this.props.showCreation(notificationContent, id)
-        setTimeout(() => {
-            this.props.hideCreation(id)
-        }, 5000)
+    handleVote = (anecdote) => async () => {
+        this.props.vote(anecdote)
+        this.props.showNotification(`you voted '${anecdote.content}'`, 5)
     }
     
     render() {
@@ -34,7 +25,7 @@ class AnecdoteList extends React.Component {
                         <div>
                             has {anecdote.votes}
                             <button onClick={
-                                this.handleVote(anecdote.id, anecdote.content)
+                                this.handleVote(anecdote)
                             }>
                                 vote
                             </button>
@@ -54,23 +45,12 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        voteCreation: (value) => {
-            dispatch(voteCreation(value))
-        },
-        showCreation: (content, id) => {
-            dispatch(showCreation(content, id))
-        },
-        hideCreation: (value) => {
-            dispatch(hideCreation(value))
-        }
-    }
-}
-
 const connectedAnecdoteList = connect(
     mapStateToProps,
-    mapDispatchToProps
+    {
+        vote,
+        showNotification
+    }
 )(AnecdoteList)
 
 export default connectedAnecdoteList
